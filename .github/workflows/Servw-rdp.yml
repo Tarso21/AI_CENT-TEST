@@ -1,0 +1,36 @@
+name: Windows Server
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    timeout-minutes: 360
+
+    steps:
+      - name: Keep Windows Server Alive
+        shell: powershell
+        run: |
+          Write-Host "=========================================="
+          Write-Host "       WINDOWS SERVER READY"
+          Write-Host "=========================================="
+
+          Write-Host ""
+          Write-Host "Computer Name:"
+          hostname
+
+          Write-Host ""
+          Write-Host "Public IP:"
+          (Invoke-RestMethod -Uri "https://api.ipify.org")
+
+          Write-Host ""
+          Write-Host "Windows Version:"
+          Get-ComputerInfo | Select-Object WindowsProductName, WindowsVersion
+
+          Write-Host "=========================================="
+
+          for ($i = 1; $i -le 360; $i++) {
+              Start-Sleep -Seconds 60
+              Write-Host "[$i/360] Windows server running..."
+          }
